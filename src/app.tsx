@@ -5,7 +5,8 @@ import {
   useFonts,
 } from '@expo-google-fonts/host-grotesk'
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { AppText } from './components/app-text'
 import { theme } from './ui/styles/theme'
 
 export function App() {
@@ -21,14 +22,9 @@ export function App() {
 
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          fontSize: theme.fontSize['3xl'],
-          fontFamily: theme.fontFamily.sans.semiBold,
-        }}
-      >
+      <AppText size="xl" weight="semiBold" style={{ textAlign: 'center' }}>
         Open up App.tsx to start working on your app!
-      </Text>
+      </AppText>
       <StatusBar style="auto" />
     </View>
   )
