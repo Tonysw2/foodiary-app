@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import bgImage from '@ui/assets/greetings-bg/image.png'
 import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
@@ -15,6 +16,8 @@ import { styles } from './styles'
 
 export function Greetings() {
   const bottomSheetRef = useRef<ISignInBottomSheet>(null)
+
+  const { navigate } = useNavigation()
 
   return (
     <>
@@ -41,7 +44,9 @@ export function Greetings() {
             </AppText>
 
             <View style={styles.ctaContent}>
-              <Button>Criar conta</Button>
+              <Button onPress={() => navigate('Onboarding')}>
+                Criar conta
+              </Button>
 
               <View style={styles.signInContainer}>
                 <AppText color={theme.colors.white}>Já tem conta?</AppText>
