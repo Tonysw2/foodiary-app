@@ -40,7 +40,7 @@ const colors = {
     800: '#09090b',
     900: '#000000',
   },
-} as const;
+} as const
 
 const fontFamily = {
   sans: {
@@ -48,7 +48,7 @@ const fontFamily = {
     medium: 'HostGrotesk_500Medium',
     semiBold: 'HostGrotesk_600SemiBold',
   },
-} as const;
+} as const
 
 const fontSize = {
   xs: 12,
@@ -58,10 +58,10 @@ const fontSize = {
   xl: 24,
   '2xl': 28,
   '3xl': 32,
-} as const;
+} as const
 
 export const theme = {
   colors,
   fontFamily,
   fontSize,
-} as const;
+} as const
