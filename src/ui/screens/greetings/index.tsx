@@ -1,15 +1,21 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import bgImage from '@ui/assets/greetings-bg/image.png'
 import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
 import { Logo } from '@ui/components/logo'
+import {
+  type ISignInBottomSheet,
+  SignInBottomSheet,
+} from '@ui/components/sign-in-bottom-sheet'
 import { theme } from '@ui/styles/theme'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useRef } from 'react'
 import { ImageBackground, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from './styles'
 
 export function Greetings() {
+  const bottomSheetRef = useRef<ISignInBottomSheet>(null)
+
   return (
     <>
       <ImageBackground
@@ -39,7 +45,9 @@ export function Greetings() {
 
               <View style={styles.signInContainer}>
                 <AppText color={theme.colors.white}>Já tem conta?</AppText>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => bottomSheetRef.current?.open()}
+                >
                   <AppText color={theme.colors.lime['500']} weight="medium">
                     Acesse sua conta
                   </AppText>
@@ -50,11 +58,7 @@ export function Greetings() {
         </SafeAreaView>
       </ImageBackground>
 
-      <BottomSheet>
-        <BottomSheetView>
-          <Button>Close this sheet</Button>
-        </BottomSheetView>
-      </BottomSheet>
+      <SignInBottomSheet ref={bottomSheetRef} />
     </>
   )
 }
