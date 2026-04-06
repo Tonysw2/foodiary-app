@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.lime[700],
     flex: 1,
     height: '100%',
-    width: '50%',
     borderRadius: 2,
   },
 
