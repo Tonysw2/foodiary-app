@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
+    paddingVertical: 32,
   },
   itemSelected: {
     borderColor: theme.colors.lime[700],
