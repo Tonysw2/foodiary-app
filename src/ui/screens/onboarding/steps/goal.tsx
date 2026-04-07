@@ -1,16 +1,86 @@
-import { AppText } from '@ui/components/app-text'
+import { Goal } from '@app/types/goal'
 import { Button } from '@ui/components/button'
-import { View } from 'react-native'
+import {
+  RadioGroup,
+  RadioGroupDescription,
+  RadioGroupIcon,
+  RadioGroupItem,
+  RadioGroupItemInfo,
+  RadioGroupLabel,
+} from '@ui/components/radio-group'
+import { ArrowRightIcon } from 'lucide-react-native'
+import { useState } from 'react'
+import {
+  Step,
+  StepContent,
+  StepFooter,
+  StepHeader,
+  StepSubtitle,
+  StepTitle,
+} from '../components/steps'
 import { useOnboarding } from '../contexts/onboarding-context'
 
+const GOAL_OPTIONS: {
+  value: Goal
+  icon: string
+  label: string
+  description: string
+}[] = [
+  {
+    value: Goal.LOSE,
+    icon: '🔥',
+    label: 'Perder peso',
+    description: 'Reduzir gordura corporal',
+  },
+  {
+    value: Goal.MAINTAIN,
+    icon: '⚖️',
+    label: 'Manter peso',
+    description: 'Manter o peso atual',
+  },
+  {
+    value: Goal.GAIN,
+    icon: '💪',
+    label: 'Ganhar peso',
+    description: 'Aumentar massa muscular',
+  },
+]
+
 export function GoalStep() {
+  const [selectedItem, setSelectedItem] = useState<Goal | null>(null)
   const { nextStep } = useOnboarding()
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <AppText size="3xl" weight="semiBold">
-        Goal
-      </AppText>
-      <Button onPress={nextStep}>Next</Button>
-    </View>
+    <Step>
+      <StepHeader>
+        <StepTitle>Qual é seu objetivo?</StepTitle>
+        <StepSubtitle>O que você pretende alcançar com a dieta?</StepSubtitle>
+      </StepHeader>
+
+      <StepContent>
+        <RadioGroup
+          value={selectedItem}
+          onValueChange={(val) => setSelectedItem(val as Goal)}
+        >
+          {GOAL_OPTIONS.map((option) => (
+            <RadioGroupItem key={option.value} value={option.value}>
+              <RadioGroupIcon>{option.icon}</RadioGroupIcon>
+              <RadioGroupItemInfo>
+                <RadioGroupLabel>{option.label}</RadioGroupLabel>
+                <RadioGroupDescription>
+                  {option.description}
+                </RadioGroupDescription>
+              </RadioGroupItemInfo>
+            </RadioGroupItem>
+          ))}
+        </RadioGroup>
+      </StepContent>
+
+      <StepFooter>
+        <Button size="icon" onPress={nextStep}>
+          <ArrowRightIcon />
+        </Button>
+      </StepFooter>
+    </Step>
   )
 }

@@ -1,19 +1,48 @@
-import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
-import { View } from 'react-native'
+import { FormGroup } from '@ui/components/form-group'
+import { Input } from '@ui/components/input'
+import { ArrowRightIcon } from 'lucide-react-native'
+import { useState } from 'react'
+import {
+  Step,
+  StepContent,
+  StepFooter,
+  StepHeader,
+  StepSubtitle,
+  StepTitle,
+} from '../components/steps'
 import { useOnboarding } from '../contexts/onboarding-context'
 
 export function WeightStep() {
-  const { nextStep, previousStep } = useOnboarding()
+  const { nextStep } = useOnboarding()
+  const [weight, setWeight] = useState('')
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <AppText size="3xl" weight="semiBold">
-        Weight
-      </AppText>
-      <View style={{ flexDirection: 'row', gap: 8 }}>
-        <Button onPress={previousStep}>Prev</Button>
-        <Button onPress={nextStep}>Next</Button>
-      </View>
-    </View>
+    <Step>
+      <StepHeader>
+        <StepTitle>Qual é o seu peso?</StepTitle>
+        <StepSubtitle>
+          Usamos isso para calcular suas necessidades calóricas
+        </StepSubtitle>
+      </StepHeader>
+
+      <StepContent position="center">
+        <FormGroup label="Peso" style={{ width: '100%' }}>
+          <Input
+            value={weight}
+            onChangeText={setWeight}
+            keyboardType="numeric"
+            placeholder="0"
+            suffix="kg"
+          />
+        </FormGroup>
+      </StepContent>
+
+      <StepFooter>
+        <Button size="icon" onPress={nextStep}>
+          <ArrowRightIcon />
+        </Button>
+      </StepFooter>
+    </Step>
   )
 }
