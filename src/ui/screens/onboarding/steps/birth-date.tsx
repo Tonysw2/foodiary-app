@@ -6,6 +6,7 @@ import { Button } from '@ui/components/button'
 import { theme } from '@ui/styles/theme'
 import { ArrowRightIcon } from 'lucide-react-native'
 import { useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 import { Platform, TouchableOpacity } from 'react-native'
 import {
   Step,
@@ -16,6 +17,7 @@ import {
   StepTitle,
 } from '../components/steps'
 import { useOnboarding } from '../contexts/onboarding-context'
+import type { OnboardingSchema } from '../schema'
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('pt-BR', {
@@ -26,18 +28,16 @@ function formatDate(date: Date) {
 }
 
 export function BirthDateStep() {
+  const { control, trigger } = useFormContext<OnboardingSchema>()
   const { nextStep } = useOnboarding()
 
-  const [date, setDate] = useState<Date>(new Date())
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(true)
 
-  const onChange = (_: DateTimePickerEvent, selected?: Date) => {
-    if (selected) {
-      setDate(selected)
-    }
+  async function handleNext() {
+    const valid = await trigger('profile.birthDate')
 
-    if (Platform.OS === 'android') {
-      setIsDatePickerVisible(false)
+    if (valid) {
+      nextStep()
     }
   }
 
@@ -49,33 +49,50 @@ export function BirthDateStep() {
       </StepHeader>
 
       <StepContent position="center">
-        {isDatePickerVisible && (
-          <DateTimePicker
-            mode="date"
-            value={date}
-            onChange={onChange}
-            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
-          />
-        )}
+        <Controller
+          control={control}
+          name="profile.birthDate"
+          render={({ field }) => (
+            <>
+              {isDatePickerVisible && (
+                <DateTimePicker
+                  mode="date"
+                  value={new Date(field.value)}
+                  onChange={(_: DateTimePickerEvent, selected?: Date) => {
+                    if (selected) {
+                      field.onChange(selected.toISOString())
+                      trigger('profile.birthDate')
+                    }
 
-        {Platform.OS === 'android' && (
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => setIsDatePickerVisible(true)}
-          >
-            <AppText
-              size="3xl"
-              weight="semiBold"
-              color={theme.colors.gray[700]}
-            >
-              {formatDate(date)}
-            </AppText>
-          </TouchableOpacity>
-        )}
+                    if (Platform.OS === 'android') {
+                      setIsDatePickerVisible(false)
+                    }
+                  }}
+                  display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+                />
+              )}
+
+              {Platform.OS === 'android' && (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => setIsDatePickerVisible(true)}
+                >
+                  <AppText
+                    size="3xl"
+                    weight="semiBold"
+                    color={theme.colors.gray[700]}
+                  >
+                    {formatDate(new Date(field.value))}
+                  </AppText>
+                </TouchableOpacity>
+              )}
+            </>
+          )}
+        />
       </StepContent>
 
       <StepFooter>
-        <Button size="icon" onPress={nextStep}>
+        <Button size="icon" onPress={handleNext}>
           <ArrowRightIcon />
         </Button>
       </StepFooter>

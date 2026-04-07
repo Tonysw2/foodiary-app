@@ -33,6 +33,10 @@ export const styles = StyleSheet.create({
   itemDisabled: {
     opacity: 0.5,
   },
+  itemError: {
+    borderColor: theme.colors.support.red,
+    backgroundColor: theme.colors.support['red/10'],
+  },
   itemContent: {
     flex: 1,
     gap: 2,

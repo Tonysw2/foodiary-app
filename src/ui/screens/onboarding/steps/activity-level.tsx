@@ -9,7 +9,7 @@ import {
   RadioGroupLabel,
 } from '@ui/components/radio-group'
 import { ArrowRightIcon } from 'lucide-react-native'
-import { useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 import {
   Step,
   StepContent,
@@ -19,6 +19,7 @@ import {
   StepTitle,
 } from '../components/steps'
 import { useOnboarding } from '../contexts/onboarding-context'
+import type { OnboardingSchema } from '../schema'
 
 const ACTIVITY_LEVEL_OPTIONS: {
   value: ActivityLevel
@@ -33,25 +34,25 @@ const ACTIVITY_LEVEL_OPTIONS: {
     description: 'Pouco ou nenhum exercício',
   },
   {
-    value: ActivityLevel.LIGHT,
+    value: ActivityLevel.LIGHTLY_ACTIVE,
     icon: '🚶',
     label: 'Levemente ativo',
     description: '1-2x por semana',
   },
   {
-    value: ActivityLevel.MODERATE,
+    value: ActivityLevel.MODERATELY_ACTIVE,
     icon: '🏃',
     label: 'Moderadamente ativo',
     description: '3-5x por semana',
   },
   {
-    value: ActivityLevel.HEAVY,
+    value: ActivityLevel.VERY_ACTIVE,
     icon: '🏋️',
     label: 'Muito ativo',
     description: '6-7x por semana',
   },
   {
-    value: ActivityLevel.ATHLETE,
+    value: ActivityLevel.EXTRA_ACTIVE,
     icon: '🏅',
     label: 'Atleta',
     description: '2x por dia',
@@ -59,8 +60,13 @@ const ACTIVITY_LEVEL_OPTIONS: {
 ]
 
 export function ActivityLevelStep() {
-  const [selectedItem, setSelectedItem] = useState<ActivityLevel | null>(null)
+  const { control, trigger } = useFormContext<OnboardingSchema>()
   const { nextStep } = useOnboarding()
+
+  async function handleNext() {
+    const valid = await trigger('profile.activityLevel')
+    if (valid) nextStep()
+  }
 
   return (
     <Step>
@@ -70,26 +76,36 @@ export function ActivityLevelStep() {
       </StepHeader>
 
       <StepContent>
-        <RadioGroup
-          value={selectedItem}
-          onValueChange={(val) => setSelectedItem(val as ActivityLevel)}
-        >
-          {ACTIVITY_LEVEL_OPTIONS.map((option) => (
-            <RadioGroupItem key={option.value} value={option.value}>
-              <RadioGroupIcon>{option.icon}</RadioGroupIcon>
-              <RadioGroupItemInfo>
-                <RadioGroupLabel>{option.label}</RadioGroupLabel>
-                <RadioGroupDescription>
-                  {option.description}
-                </RadioGroupDescription>
-              </RadioGroupItemInfo>
-            </RadioGroupItem>
-          ))}
-        </RadioGroup>
+        <Controller
+          control={control}
+          name="profile.activityLevel"
+          render={({ field, fieldState }) => (
+            <RadioGroup
+              value={field.value}
+              onValueChange={(val) => {
+                field.onChange(val as ActivityLevel)
+                trigger('profile.activityLevel')
+              }}
+              error={!!fieldState.error}
+            >
+              {ACTIVITY_LEVEL_OPTIONS.map((option) => (
+                <RadioGroupItem key={option.value} value={option.value}>
+                  <RadioGroupIcon>{option.icon}</RadioGroupIcon>
+                  <RadioGroupItemInfo>
+                    <RadioGroupLabel>{option.label}</RadioGroupLabel>
+                    <RadioGroupDescription>
+                      {option.description}
+                    </RadioGroupDescription>
+                  </RadioGroupItemInfo>
+                </RadioGroupItem>
+              ))}
+            </RadioGroup>
+          )}
+        />
       </StepContent>
 
       <StepFooter>
-        <Button size="icon" onPress={nextStep}>
+        <Button size="icon" onPress={handleNext}>
           <ArrowRightIcon />
         </Button>
       </StepFooter>

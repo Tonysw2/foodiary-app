@@ -2,7 +2,7 @@ import { Button } from '@ui/components/button'
 import { FormGroup } from '@ui/components/form-group'
 import { Input } from '@ui/components/input'
 import { ArrowRightIcon } from 'lucide-react-native'
-import { useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 import {
   Step,
   StepContent,
@@ -12,10 +12,19 @@ import {
   StepTitle,
 } from '../components/steps'
 import { useOnboarding } from '../contexts/onboarding-context'
+import type { OnboardingSchema } from '../schema'
 
 export function HeightStep() {
+  const { control, trigger } = useFormContext<OnboardingSchema>()
   const { nextStep } = useOnboarding()
-  const [height, setHeight] = useState('')
+
+  async function handleNext() {
+    const valid = await trigger('profile.height')
+
+    if (valid) {
+      nextStep()
+    }
+  }
 
   return (
     <Step>
@@ -27,19 +36,32 @@ export function HeightStep() {
       </StepHeader>
 
       <StepContent position="center">
-        <FormGroup label="Altura" style={{ width: '100%' }}>
-          <Input
-            value={height}
-            onChangeText={setHeight}
-            keyboardType="numeric"
-            placeholder="0"
-            suffix="cm"
-          />
-        </FormGroup>
+        <Controller
+          control={control}
+          name="profile.height"
+          render={({ field, fieldState }) => (
+            <FormGroup
+              label="Altura"
+              error={fieldState.error?.message}
+              style={{ width: '100%' }}
+            >
+              <Input
+                value={field.value ? String(field.value) : ''}
+                onChangeText={(val) => {
+                  field.onChange(parseFloat(val))
+                  trigger('profile.height')
+                }}
+                keyboardType="numeric"
+                placeholder="0"
+                suffix="cm"
+              />
+            </FormGroup>
+          )}
+        />
       </StepContent>
 
       <StepFooter>
-        <Button size="icon" onPress={nextStep}>
+        <Button size="icon" onPress={handleNext}>
           <ArrowRightIcon />
         </Button>
       </StepFooter>
