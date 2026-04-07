@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 export const onboardingSchema = z.object({
   profile: z.object({
+    name: z.string().min(1, 'Nome é obrigatório'),
     birthDate: z.iso.datetime('Data de nascimento é obrigatória'),
     gender: z.enum(Gender),
     height: z.number().positive('Altura inválida'),
@@ -14,7 +15,6 @@ export const onboardingSchema = z.object({
   }),
   account: z
     .object({
-      name: z.string().min(1, 'Nome é obrigatório'),
       email: z.email('Informe um e-mail válido'),
       password: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres'),
       confirmPassword: z.string().min(1, 'Confirme sua senha'),

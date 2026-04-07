@@ -1,3 +1,4 @@
+import { AuthService } from '@app/services/auth-service'
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useImperativeHandle, useRef } from 'react'
@@ -30,7 +31,14 @@ export function useSignInBottomSheetController(
     },
   })
 
-  const onSubmit = form.handleSubmit(() => Alert.alert('Passou o login hehe'))
+  const onSubmit = form.handleSubmit(async (data) => {
+    try {
+      const { accessToken, refreshToken } = await AuthService.signIn(data)
+      console.log(JSON.stringify({ accessToken, refreshToken }, null, 2))
+    } catch {
+      Alert.alert('Credenciais inválidas.')
+    }
+  })
 
   return {
     form,

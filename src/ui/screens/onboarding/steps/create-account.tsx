@@ -1,9 +1,11 @@
+import { AuthService } from '@app/services/auth-service'
 import { Button } from '@ui/components/button'
 import { FormGroup } from '@ui/components/form-group'
 import { Input } from '@ui/components/input'
+import { isAxiosError } from 'axios'
 import { useRef } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { type TextInput, View } from 'react-native'
+import { Alert, type TextInput, View } from 'react-native'
 import {
   Step,
   StepContent,
@@ -21,8 +23,28 @@ export function CreateAccountStep() {
   const passwordRef = useRef<TextInput>(null)
   const confirmPasswordRef = useRef<TextInput>(null)
 
-  const onSubmit = form.handleSubmit(async (data) => {
-    console.log(JSON.stringify(data, null, 2))
+  const onSubmit = form.handleSubmit(async ({ account, profile }) => {
+    try {
+      const { accessToken, refreshToken } = await AuthService.signUp({
+        account: {
+          email: account.email,
+          password: account.password,
+        },
+        profile: {
+          ...profile,
+        },
+      })
+      console.log(JSON.stringify({ accessToken, refreshToken }, null, 2))
+    } catch (error) {
+      if (
+        isAxiosError(error) &&
+        error.response?.data?.code === 'EMAIL_ALREADY_IN_USE'
+      ) {
+        Alert.alert('Este e-mail já está em uso.')
+        return
+      }
+      Alert.alert('Erro ao criar conta. Tente novamente.')
+    }
   })
 
   return (
@@ -36,7 +58,7 @@ export function CreateAccountStep() {
         <View style={{ gap: 24 }}>
           <Controller
             control={form.control}
-            name="account.name"
+            name="profile.name"
             render={({ field, fieldState }) => (
               <FormGroup
                 label="Nome"
@@ -52,6 +74,7 @@ export function CreateAccountStep() {
                   autoComplete="name"
                   returnKeyType="next"
                   onSubmitEditing={() => emailRef.current?.focus()}
+                  disabled={form.formState.isSubmitting}
                 />
               </FormGroup>
             )}
@@ -77,6 +100,7 @@ export function CreateAccountStep() {
                   autoComplete="email"
                   returnKeyType="next"
                   onSubmitEditing={() => passwordRef.current?.focus()}
+                  disabled={form.formState.isSubmitting}
                 />
               </FormGroup>
             )}
@@ -101,6 +125,7 @@ export function CreateAccountStep() {
                   autoComplete="new-password"
                   returnKeyType="next"
                   onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                  disabled={form.formState.isSubmitting}
                 />
               </FormGroup>
             )}
@@ -125,6 +150,7 @@ export function CreateAccountStep() {
                   autoComplete="new-password"
                   returnKeyType="done"
                   onSubmitEditing={onSubmit}
+                  disabled={form.formState.isSubmitting}
                 />
               </FormGroup>
             )}
@@ -133,7 +159,9 @@ export function CreateAccountStep() {
       </StepContent>
 
       <StepFooter align="start">
-        <Button onPress={onSubmit}>Criar conta</Button>
+        <Button onPress={onSubmit} isLoading={form.formState.isSubmitting}>
+          Criar conta
+        </Button>
       </StepFooter>
     </Step>
   )
