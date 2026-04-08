@@ -1,3 +1,5 @@
+import { AuthProvider } from '@app/providers/auth-provider'
+import { TanstackQueryProvider } from '@app/providers/tanstack-query-provider'
 import {
   HostGrotesk_400Regular,
   HostGrotesk_500Medium,
@@ -24,7 +26,11 @@ export function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <BottomSheetModalProvider>
-          <RootNavigator />
+          <TanstackQueryProvider>
+            <AuthProvider>
+              <RootNavigator />
+            </AuthProvider>
+          </TanstackQueryProvider>
         </BottomSheetModalProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>

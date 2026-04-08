@@ -6,4 +6,12 @@ export abstract class Service {
   protected static client = axios.create({
     baseURL: env.api.url,
   })
+
+  static setAccessToken(accessToken: string) {
+    Service.client.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  }
+
+  static clearAccessToken() {
+    delete Service.client.defaults.headers.common.Authorization
+  }
 }

@@ -1,4 +1,4 @@
-import { AuthService } from '@app/services/auth-service'
+import { useAuth } from '@app/providers/auth-provider'
 import { Button } from '@ui/components/button'
 import { FormGroup } from '@ui/components/form-group'
 import { Input } from '@ui/components/input'
@@ -17,6 +17,7 @@ import {
 import type { OnboardingSchema } from '../schema'
 
 export function CreateAccountStep() {
+  const { signUp } = useAuth()
   const form = useFormContext<OnboardingSchema>()
 
   const emailRef = useRef<TextInput>(null)
@@ -25,7 +26,7 @@ export function CreateAccountStep() {
 
   const onSubmit = form.handleSubmit(async ({ account, profile }) => {
     try {
-      const { accessToken, refreshToken } = await AuthService.signUp({
+      await signUp({
         account: {
           email: account.email,
           password: account.password,
@@ -34,7 +35,6 @@ export function CreateAccountStep() {
           ...profile,
         },
       })
-      console.log(JSON.stringify({ accessToken, refreshToken }, null, 2))
     } catch (error) {
       if (
         isAxiosError(error) &&

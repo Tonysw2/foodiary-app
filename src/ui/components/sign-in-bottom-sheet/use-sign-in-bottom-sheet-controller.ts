@@ -1,4 +1,4 @@
-import { AuthService } from '@app/services/auth-service'
+import { useAuth } from '@app/providers/auth-provider'
 import type { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useImperativeHandle, useRef } from 'react'
@@ -10,6 +10,8 @@ import { type SignInFormData, signInSchema } from './schema'
 export function useSignInBottomSheetController(
   ref: React.Ref<{ open: () => void }>,
 ) {
+  const { signIn } = useAuth()
+
   const bottomSheetRef = useRef<BottomSheetModal>(null)
   const passwordInputRef = useRef<TextInput>(null)
 
@@ -33,8 +35,7 @@ export function useSignInBottomSheetController(
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-      const { accessToken, refreshToken } = await AuthService.signIn(data)
-      console.log(JSON.stringify({ accessToken, refreshToken }, null, 2))
+      await signIn(data)
     } catch {
       Alert.alert('Credenciais inválidas.')
     }
