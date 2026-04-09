@@ -5,7 +5,7 @@ export const accountQueryKeys = {
   all: ['me'] as const,
 }
 
-export const accountQueryOptions = () =>
+export const getAccountQueryOptions = () =>
   queryOptions({
     queryKey: accountQueryKeys.all,
     queryFn: ({ signal }) => AccountService.getMe({ signal }),

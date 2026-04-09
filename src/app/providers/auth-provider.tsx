@@ -1,6 +1,6 @@
 import { useForceRender } from '@app/hooks/use-force-render'
 import { AuthTokensManager } from '@app/lib/auth-tokens-manager'
-import { accountQueryOptions } from '@app/lib/query-options/account-query-options'
+import { getAccountQueryOptions } from '@app/lib/query-options/get-account-query-options'
 import { AuthService } from '@app/services/auth-service'
 import { Service } from '@app/services/service'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,6 +15,7 @@ import {
 
 interface AuthContextValue {
   signedIn: boolean
+  signedUp: boolean
   signIn: (payload: AuthService.SignInPayload) => Promise<void>
   signUp: (payload: AuthService.SignUpPayload) => Promise<void>
   signOut: () => void
@@ -29,13 +30,15 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
+  const [isReady, setIsReady] = useState(false)
+  const [signedUp, setSignedUp] = useState(false)
+
   const queryClient = useQueryClient()
   const forceRender = useForceRender()
 
   const { data: account, refetch: loadAccount } = useQuery(
-    accountQueryOptions(),
+    getAccountQueryOptions(),
   )
-  const [isReady, setIsReady] = useState(false)
 
   const signOut = useCallback(async () => {
     await AuthTokensManager.clear()
@@ -99,6 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const tokens = await AuthService.signUp(payload)
       await AuthTokensManager.save(tokens)
       await setupAuth(tokens)
+      setSignedUp(true)
     },
     [setupAuth],
   )
@@ -109,7 +113,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ signedIn: !!account, signIn, signUp, signOut }}
+      value={{ signedIn: !!account, signedUp, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>
