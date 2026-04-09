@@ -1,18 +1,23 @@
-import { useAuth } from '@app/providers/auth-provider'
 import { AppText } from '@ui/components/app-text'
-import { Button } from '@ui/components/button'
 import { WelcomeModal } from '@ui/components/welcome-modal'
-import { View } from 'react-native'
+import { FlatList, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Header } from './components/header'
 import { styles } from './styles'
 
 export function Home() {
-  const { signOut } = useAuth()
+  const { top } = useSafeAreaInsets()
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: top }]}>
       <WelcomeModal />
-      <AppText style={styles.text}>Home</AppText>
-      <Button onPress={signOut}>Sair</Button>
+
+      <FlatList
+        ListHeaderComponent={Header}
+        data={[1, 2, 3, 4]}
+        keyExtractor={(item) => String(item)}
+        renderItem={() => <AppText>oi</AppText>}
+      />
     </View>
   )
 }
