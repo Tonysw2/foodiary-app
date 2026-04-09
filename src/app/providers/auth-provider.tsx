@@ -37,14 +37,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
   )
   const [isReady, setIsReady] = useState(false)
 
+  const signOut = useCallback(async () => {
+    await AuthTokensManager.clear()
+    Service.clearAccessToken()
+    Service.removeRefreshTokenHandler()
+    queryClient.clear()
+    forceRender()
+  }, [queryClient, forceRender])
+
   const setupAuth = useCallback(
     async (tokens: { accessToken: string; refreshToken: string }) => {
       Service.setAccessToken(tokens.accessToken)
+      Service.setRefreshTokenHandler(async () => {
+        try {
+          const storedTokens = await AuthTokensManager.load()
+          if (!storedTokens) {
+            throw new Error('Tokens not found')
+          }
+          const newTokens = await AuthService.refreshToken({
+            refreshToken: storedTokens.refreshToken,
+          })
+          Service.setAccessToken(newTokens.accessToken)
+          await AuthTokensManager.save(newTokens)
+        } catch (error) {
+          signOut()
+          throw error
+        }
+      })
       await loadAccount()
       SplashScreen.hideAsync()
       setIsReady(true)
     },
-    [loadAccount],
+    [loadAccount, signOut],
   )
 
   useLayoutEffect(() => {
@@ -78,13 +102,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     },
     [setupAuth],
   )
-
-  const signOut = useCallback(async () => {
-    await AuthTokensManager.clear()
-    queryClient.clear()
-    Service.clearAccessToken()
-    forceRender()
-  }, [queryClient, forceRender])
 
   if (!isReady) {
     return null
