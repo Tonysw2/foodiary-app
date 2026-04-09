@@ -64,12 +64,14 @@ export function WelcomeModal() {
                   </AppText>
                 </View>
               </View>
-              <GoalStats
-                calories={{ goal: account!.goal.calories }}
-                carbohydrates={{ goal: account!.goal.carbohydrates }}
-                fats={{ goal: account!.goal.fats }}
-                proteins={{ goal: account!.goal.proteins }}
-              />
+              <View style={{ alignItems: 'center' }}>
+                <GoalStats
+                  calories={{ goal: account!.goal.calories }}
+                  carbohydrates={{ goal: account!.goal.carbohydrates }}
+                  fats={{ goal: account!.goal.fats }}
+                  proteins={{ goal: account!.goal.proteins }}
+                />
+              </View>
             </View>
             <View style={styles.footer}>
               <Button onPress={handleCloseModal}>Começar meu plano</Button>
