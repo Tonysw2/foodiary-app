@@ -1,11 +1,53 @@
+import type { Meal } from '@app/types/meal'
 import { AppText } from '@ui/components/app-text'
 import { theme } from '@ui/styles/theme'
+import { useMemo } from 'react'
 import { Platform, Pressable, StyleSheet, View } from 'react-native'
 
-export function MealCard() {
+function formatDate(date: string) {
+  return new Date(date)
+    .toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    .replace(':', 'h')
+}
+
+interface MealCardProps {
+  meal: Meal
+}
+
+export function MealCard({ meal }: MealCardProps) {
+  const foodsLabel = useMemo(
+    () => meal.foods.map((f) => f.name).join(', '),
+    [meal.foods],
+  )
+
+  const summary = useMemo(
+    () =>
+      meal.foods.reduce(
+        (acc, f) => ({
+          calories: acc.calories + f.calories,
+          proteins: acc.proteins + f.proteins,
+          carbohydrates: acc.carbohydrates + f.carbohydrates,
+          fats: acc.fats + f.fats,
+        }),
+        {
+          calories: 0,
+          proteins: 0,
+          carbohydrates: 0,
+          fats: 0,
+        },
+      ),
+    [meal.foods],
+  )
+
   return (
     <View style={styles.container}>
-      <AppText color={theme.colors.gray[700]}>12h15</AppText>
+      <AppText color={theme.colors.gray[700]}>
+        {formatDate(meal.createdAt)}
+      </AppText>
 
       <View style={styles.wrapper}>
         <Pressable
@@ -17,15 +59,15 @@ export function MealCard() {
         >
           <View style={styles.cardHeader}>
             <View style={styles.icon}>
-              <AppText>🥦</AppText>
+              <AppText>{meal.icon}</AppText>
             </View>
 
             <View style={styles.cardHeaderInfo}>
               <AppText size="sm" color={theme.colors.gray[700]}>
-                Café da manhã
+                {meal.name}
               </AppText>
               <AppText weight="medium" numberOfLines={1}>
-                Pão, manteiga e café
+                {foodsLabel}
               </AppText>
             </View>
           </View>
@@ -33,13 +75,13 @@ export function MealCard() {
             <View style={styles.cardContentRow}>
               <View style={styles.cardContentItem}>
                 <AppText weight="medium" color={theme.colors.support.tomato}>
-                  210
+                  {summary.calories}
                 </AppText>
                 <AppText color={theme.colors.gray[700]}>Kcal</AppText>
               </View>
               <View style={styles.cardContentItem}>
                 <AppText weight="medium" color={theme.colors.support.green}>
-                  210g
+                  {summary.proteins}g
                 </AppText>
                 <AppText color={theme.colors.gray[700]}>Proteínas</AppText>
               </View>
@@ -47,13 +89,13 @@ export function MealCard() {
             <View style={styles.cardContentRow}>
               <View style={styles.cardContentItem}>
                 <AppText weight="medium" color={theme.colors.support.yellow}>
-                  210g
+                  {summary.carbohydrates}g
                 </AppText>
                 <AppText color={theme.colors.gray[700]}>Carboidratos</AppText>
               </View>
               <View style={styles.cardContentItem}>
                 <AppText weight="medium" color={theme.colors.support.orange}>
-                  210
+                  {summary.fats}g
                 </AppText>
                 <AppText color={theme.colors.gray[700]}>Gorduras</AppText>
               </View>

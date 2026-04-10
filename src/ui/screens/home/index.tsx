@@ -1,9 +1,12 @@
+import { getMealsQueryOptions } from '@app/lib/query-options/get-meals-query-options'
+import { useQuery } from '@tanstack/react-query'
 import { WelcomeModal } from '@ui/components/welcome-modal'
 import { theme } from '@ui/styles/theme'
 import { useState } from 'react'
 import { FlatList, RefreshControl, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { EmptyState } from './components/empty-state'
+import { FullScreenLoader } from './components/full-screen-loader'
 import { Header } from './components/header'
 import { ItemSeparatorComponent } from './components/item-separator-component'
 import { MealCard } from './components/meal-card'
@@ -14,10 +17,20 @@ export function Home() {
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
+  const {
+    data,
+    refetch: fetchMeals,
+    isLoading,
+  } = useQuery(getMealsQueryOptions(new Date()))
+
   async function handleRefresh() {
     setIsRefreshing(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await fetchMeals()
     setIsRefreshing(false)
+  }
+
+  if (isLoading) {
+    return <FullScreenLoader />
   }
 
   return (
@@ -25,7 +38,7 @@ export function Home() {
       <WelcomeModal />
 
       <FlatList
-        data={[1, 2, 3]}
+        data={data?.meals ?? []}
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -34,8 +47,8 @@ export function Home() {
             colors={[theme.colors.lime[700]]}
           />
         }
-        keyExtractor={(item) => String(item)}
-        renderItem={() => <MealCard />}
+        keyExtractor={(meal) => meal.id}
+        renderItem={({ item }) => <MealCard meal={item} />}
         contentContainerStyle={[styles.content, { paddingBottom: bottom + 24 }]}
         ListHeaderComponent={Header}
         ListEmptyComponent={EmptyState}
