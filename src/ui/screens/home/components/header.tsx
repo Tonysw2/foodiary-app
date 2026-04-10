@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     paddingHorizontal: 8,
     paddingVertical: 12,
+    marginTop: -16,
   },
   divider: {
     backgroundColor: theme.colors.gray[200],
@@ -34,7 +35,10 @@ export function Header() {
 
         <View style={styles.divider} />
 
-        <AppText weight="medium" style={{ letterSpacing: 1.28 }}>
+        <AppText
+          weight="medium"
+          style={{ letterSpacing: 1.28, paddingHorizontal: 12 }}
+        >
           REFEIÇÕES
         </AppText>
       </View>
