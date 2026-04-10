@@ -1,33 +1,29 @@
-import { getMealsQueryOptions } from '@app/lib/query-options/get-meals-query-options'
-import { useQuery } from '@tanstack/react-query'
 import { WelcomeModal } from '@ui/components/welcome-modal'
 import { theme } from '@ui/styles/theme'
-import { useState } from 'react'
 import { FlatList, RefreshControl, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { EmptyState } from './components/empty-state'
 import { FullScreenLoader } from './components/full-screen-loader'
 import { Header } from './components/header'
 import { ItemSeparatorComponent } from './components/item-separator-component'
 import { MealCard } from './components/meal-card'
+import { HomeProvider } from './context/home-context'
 import { styles } from './styles'
+import { useHomeController } from './use-home-controller'
 
 export function Home() {
-  const { top, bottom } = useSafeAreaInsets()
-
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
   const {
+    top,
+    bottom,
+    date,
     data,
-    refetch: fetchMeals,
     isLoading,
-  } = useQuery(getMealsQueryOptions(new Date()))
-
-  async function handleRefresh() {
-    setIsRefreshing(true)
-    await fetchMeals()
-    setIsRefreshing(false)
-  }
+    isFetching,
+    isRefetching,
+    nextDay,
+    previousDay,
+    refetchMeals,
+    handleRefresh,
+  } = useHomeController()
 
   if (isLoading) {
     return <FullScreenLoader />
@@ -37,23 +33,35 @@ export function Home() {
     <View style={[styles.container, { paddingTop: top }]}>
       <WelcomeModal />
 
-      <FlatList
-        data={data?.meals ?? []}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={handleRefresh}
-            tintColor={theme.colors.lime[900]}
-            colors={[theme.colors.lime[700]]}
-          />
-        }
-        keyExtractor={(meal) => meal.id}
-        renderItem={({ item }) => <MealCard meal={item} />}
-        contentContainerStyle={[styles.content, { paddingBottom: bottom + 24 }]}
-        ListHeaderComponent={Header}
-        ListEmptyComponent={EmptyState}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-      />
+      <HomeProvider
+        date={date}
+        meals={data?.meals ?? []}
+        isLoading={isFetching}
+        nextDay={nextDay}
+        previousDay={previousDay}
+        refetchMeals={refetchMeals}
+      >
+        <FlatList
+          data={data?.meals}
+          keyExtractor={(meal) => meal.id}
+          contentContainerStyle={[
+            styles.content,
+            { paddingBottom: bottom + 24 },
+          ]}
+          ListHeaderComponent={Header}
+          ListEmptyComponent={EmptyState}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          renderItem={({ item }) => <MealCard meal={item} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefetching}
+              onRefresh={handleRefresh}
+              tintColor={theme.colors.lime[900]}
+              colors={[theme.colors.lime[700]]}
+            />
+          }
+        />
+      </HomeProvider>
     </View>
   )
 }

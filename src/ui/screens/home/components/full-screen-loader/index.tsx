@@ -1,3 +1,4 @@
+import { Logo } from '@ui/components/logo'
 import { theme } from '@ui/styles/theme'
 import { Loader2Icon } from 'lucide-react-native'
 import { useEffect, useRef } from 'react'
@@ -25,6 +26,7 @@ export function FullScreenLoader() {
 
   return (
     <View style={styles.container}>
+      <Logo />
       <Animated.View style={{ transform: [{ rotate }] }}>
         <Loader2Icon size={20} color={theme.colors.white} />
       </Animated.View>

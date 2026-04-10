@@ -7,5 +7,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.lime[700],
+    gap: 48,
   },
 })

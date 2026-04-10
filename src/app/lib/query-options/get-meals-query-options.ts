@@ -14,5 +14,6 @@ export const getMealsQueryOptions = (date: Date) => {
     queryFn: ({ signal }) =>
       MealsService.listMealsByDay({ date: formattedDate, signal }),
     staleTime: Number.POSITIVE_INFINITY,
+    placeholderData: (previous) => previous,
   })
 }
