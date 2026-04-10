@@ -1,14 +1,8 @@
 import { AppText } from '@ui/components/app-text'
 import { CreateMealOptions } from '@ui/components/create-meal-options'
 import { theme } from '@ui/styles/theme'
-import { StyleSheet, View } from 'react-native'
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    gap: 16,
-  },
-})
+import { View } from 'react-native'
+import { styles } from './styles'
 
 export function EmptyState() {
   return (

@@ -2,15 +2,8 @@ import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
 import { theme } from '@ui/styles/theme'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react-native'
-import { StyleSheet, View } from 'react-native'
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-})
+import { View } from 'react-native'
+import { styles } from './styles'
 
 export function DateSwitcher() {
   return (
@@ -22,7 +15,7 @@ export function DateSwitcher() {
       <AppText
         weight="medium"
         color={theme.colors.gray[700]}
-        style={{ letterSpacing: 1.28 }}
+        style={styles.dateText}
       >
         {formatDate(new Date())}
       </AppText>

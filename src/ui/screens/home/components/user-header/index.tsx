@@ -4,32 +4,8 @@ import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
 import { theme } from '@ui/styles/theme'
 import { TargetIcon } from 'lucide-react-native'
-import { Image, StyleSheet, View } from 'react-native'
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    gap: 16,
-    backgroundColor: theme.colors.lime[400],
-    paddingBottom: 30,
-  },
-  userInfo: {
-    gap: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  avatar: {
-    height: 48,
-    width: 48,
-    borderRadius: 24,
-  },
-  greetings: {
-    gap: 2,
-  },
-})
+import { Image, View } from 'react-native'
+import { styles } from './styles'
 
 export function UserHeader() {
   const { data: account } = useQuery(getAccountQueryOptions())

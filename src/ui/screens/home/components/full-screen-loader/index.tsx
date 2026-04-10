@@ -1,7 +1,8 @@
 import { theme } from '@ui/styles/theme'
 import { Loader2Icon } from 'lucide-react-native'
 import { useEffect, useRef } from 'react'
-import { Animated, Easing, StyleSheet, View } from 'react-native'
+import { Animated, Easing, View } from 'react-native'
+import { styles } from './styles'
 
 export function FullScreenLoader() {
   const rotation = useRef(new Animated.Value(0)).current
@@ -30,12 +31,3 @@ export function FullScreenLoader() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.lime[700],
-  },
-})

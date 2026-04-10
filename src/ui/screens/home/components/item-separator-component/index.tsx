@@ -1,5 +1,6 @@
 import { View } from 'react-native'
+import { styles } from './styles'
 
 export function ItemSeparatorComponent() {
-  return <View style={{ height: 32 }} />
+  return <View style={styles.separator} />
 }

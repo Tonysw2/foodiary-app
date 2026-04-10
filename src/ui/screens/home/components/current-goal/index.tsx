@@ -2,12 +2,13 @@ import { getAccountQueryOptions } from '@app/lib/query-options/get-account-query
 import { useQuery } from '@tanstack/react-query'
 import { GoalStats } from '@ui/components/goal-stats'
 import { View } from 'react-native'
+import { styles } from './styles'
 
 export function CurrentGoal() {
   const { data: account } = useQuery(getAccountQueryOptions())
 
   return (
-    <View style={{ alignItems: 'center' }}>
+    <View style={styles.container}>
       <GoalStats
         calories={{ goal: account!.goal.calories }}
         carbohydrates={{ goal: account!.goal.carbohydrates }}
