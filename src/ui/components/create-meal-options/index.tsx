@@ -1,7 +1,9 @@
 import { theme } from '@ui/styles/theme'
 import { ImageIcon, type LucideIcon, MicIcon } from 'lucide-react-native'
+import { useState } from 'react'
 import { Platform, Pressable, View } from 'react-native'
 import { AppText } from '../app-text'
+import { AudioModal } from '../audio-modal'
 import { styles } from './styles'
 
 interface CreateMealOptionsProps {
@@ -9,10 +11,37 @@ interface CreateMealOptionsProps {
 }
 
 export function CreateMealOptions({ disabled }: CreateMealOptionsProps) {
+  const [currentVisibleModal, setCurrentVisibleModal] = useState<
+    null | 'audio' | 'picture'
+  >(null)
+
+  function handleOpenModal(modal: 'audio' | 'picture') {
+    setCurrentVisibleModal(modal)
+  }
+
+  function handleCloseModal() {
+    setCurrentVisibleModal(null)
+  }
+
   return (
     <View style={styles.container}>
-      <MealOptionButton icon={MicIcon} label="Audio" disabled={disabled} />
-      <MealOptionButton icon={ImageIcon} label="Image" disabled={disabled} />
+      <AudioModal
+        visible={currentVisibleModal === 'audio'}
+        onClose={handleCloseModal}
+      />
+
+      <MealOptionButton
+        icon={MicIcon}
+        label="Audio"
+        disabled={disabled}
+        onPress={() => handleOpenModal('audio')}
+      />
+      <MealOptionButton
+        icon={ImageIcon}
+        label="Image"
+        disabled={disabled}
+        onPress={() => handleOpenModal('picture')}
+      />
     </View>
   )
 }
