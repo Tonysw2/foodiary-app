@@ -2,6 +2,7 @@ import { WelcomeModal } from '@ui/components/welcome-modal'
 import { theme } from '@ui/styles/theme'
 import { FlatList, RefreshControl, View } from 'react-native'
 import { EmptyState } from './components/empty-state'
+import { Fab } from './components/fab'
 import { FullScreenLoader } from './components/full-screen-loader'
 import { Header } from './components/header'
 import { ItemSeparatorComponent } from './components/item-separator-component'
@@ -61,6 +62,7 @@ export function Home() {
             />
           }
         />
+        {data?.meals && data.meals.length > 0 && <Fab />}
       </HomeProvider>
     </View>
   )
