@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Platform, Pressable, View } from 'react-native'
 import { AppText } from '../app-text'
 import { AudioModal } from '../audio-modal'
+import { PictureModal } from '../picture-modal'
 import { styles } from './styles'
 
 interface CreateMealOptionsProps {
@@ -27,6 +28,10 @@ export function CreateMealOptions({ disabled }: CreateMealOptionsProps) {
     <View style={styles.container}>
       <AudioModal
         visible={currentVisibleModal === 'audio'}
+        onClose={handleCloseModal}
+      />
+      <PictureModal
+        visible={currentVisibleModal === 'picture'}
         onClose={handleCloseModal}
       />
 
