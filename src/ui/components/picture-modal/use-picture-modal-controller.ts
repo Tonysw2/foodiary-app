@@ -1,6 +1,8 @@
+import { createMealMutationOptions } from '@app/lib/mutation-options/create-meal-mutation-options'
+import { useMutation } from '@tanstack/react-query'
 import { type CameraView, useCameraPermissions } from 'expo-camera'
 import { useRef, useState } from 'react'
-import { Linking } from 'react-native'
+import { Alert, Linking } from 'react-native'
 
 interface UsePictureModalControllerProps {
   onClose: () => void
@@ -15,6 +17,8 @@ export function usePictureModalController({
   const [photoUri, setPhotoUri] = useState<string | null>(null)
 
   const [permission, requestPermission] = useCameraPermissions()
+
+  const { mutateAsync: createMealFn } = useMutation(createMealMutationOptions())
 
   async function handleTakePicture() {
     if (!cameraRef.current) {
@@ -37,11 +41,21 @@ export function usePictureModalController({
     onClose()
   }
 
-  function handleConfirm() {
-    if (photoUri) {
-      onConfirm?.(photoUri)
+  async function handleConfirm() {
+    if (!photoUri) {
+      return
     }
-    handleClose()
+
+    try {
+      await createMealFn(photoUri)
+    } catch (error) {
+      console.error(error)
+
+      Alert.alert(
+        'Oops!',
+        'Ocorreu um erro ao criar a sua refeição! Tente novamente.',
+      )
+    }
   }
 
   function handleRequestPermission() {
