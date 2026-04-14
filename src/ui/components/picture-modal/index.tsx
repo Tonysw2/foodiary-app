@@ -31,6 +31,7 @@ export function PictureModal({
     permission,
     cameraRef,
     isLoading,
+    handleClose,
     handleTakePicture,
     handleTryAgain,
     handleConfirm,
@@ -43,7 +44,7 @@ export function PictureModal({
       statusBarTranslucent
       animationType="slide"
       visible={visible}
-      onRequestClose={onClose}
+      onRequestClose={handleClose}
     >
       <StatusBar animated translucent barStyle="light-content" />
       {isLoading && <CreateMealLoader type="picture" />}
@@ -54,7 +55,7 @@ export function PictureModal({
             <SafeAreaView style={styles.content}>
               <View style={styles.header}>
                 <Button
-                  onPress={onClose}
+                  onPress={handleClose}
                   size="icon"
                   variant="neutral"
                   rippleStyle="light"

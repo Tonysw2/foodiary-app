@@ -32,11 +32,16 @@ export function usePictureModalController({
     setPhotoUri(null)
   }
 
+  function handleClose() {
+    setPhotoUri(null)
+    onClose()
+  }
+
   function handleConfirm() {
     if (photoUri) {
       onConfirm?.(photoUri)
     }
-    onClose()
+    handleClose()
   }
 
   function handleRequestPermission() {
@@ -52,6 +57,7 @@ export function usePictureModalController({
     permission,
     cameraRef,
     isLoading: false,
+    handleClose,
     handleTakePicture,
     handleTryAgain,
     handleConfirm,
