@@ -1,8 +1,9 @@
 import { createMealMutationOptions } from '@app/lib/mutation-options/create-meal-mutation-options'
 import { getMealByIdQueryOptions } from '@app/lib/query-options/get-meal-by-id-query-options'
+import { mealsQueryKeys } from '@app/lib/query-options/get-meals-query-options'
 import type { AppStackNavigationProps } from '@app/navigation/app-stack/types'
 import { useNavigation } from '@react-navigation/native'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { type CameraView, useCameraPermissions } from 'expo-camera'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Alert, Linking } from 'react-native'
@@ -19,6 +20,8 @@ export function usePictureModalController({
   const navigation = useNavigation<AppStackNavigationProps>()
   const cameraRef = useRef<CameraView>(null)
   const [photoUri, setPhotoUri] = useState<string | null>(null)
+
+  const queryClient = useQueryClient()
 
   const [permission, requestPermission] = useCameraPermissions()
 
@@ -51,18 +54,17 @@ export function usePictureModalController({
     if (data?.meal.status === 'SUCCESS') {
       memoizedOnClose.current()
       memoizedOnConfirm.current?.()
+      queryClient.invalidateQueries({ queryKey: mealsQueryKeys.all })
       navigation.navigate('MealDetails', { mealId: data.meal.id })
     }
 
     if (data?.meal.status === 'FAILED') {
-      memoizedOnClose.current()
-      memoizedOnConfirm.current?.()
       Alert.alert(
         'Oops!',
         'Não foi possível processar sua refeição. Tente novamente.',
       )
     }
-  }, [data?.meal, navigation.navigate])
+  }, [data?.meal.id, data?.meal.status, navigation.navigate, queryClient])
 
   async function handleTakePicture() {
     if (!cameraRef.current) {
