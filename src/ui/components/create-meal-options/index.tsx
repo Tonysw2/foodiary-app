@@ -33,6 +33,7 @@ export function CreateMealOptions({
       <AudioModal
         visible={currentVisibleModal === 'audio'}
         onClose={handleCloseModal}
+        onConfirm={onCreate}
       />
       <PictureModal
         visible={currentVisibleModal === 'picture'}

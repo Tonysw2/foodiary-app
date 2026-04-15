@@ -12,19 +12,19 @@ import { useAudioModalController } from './use-audio-modal-controller'
 interface AudioModalProps {
   visible: boolean
   onClose: () => void
+  onConfirm?: () => void
 }
 
-export function AudioModal({ visible, onClose }: AudioModalProps) {
+export function AudioModal({ visible, onClose, onConfirm }: AudioModalProps) {
   const {
     state,
     audioUri,
+    isLoading,
     handleStartRecording,
     handleStopRecording,
     handleTryAgain,
     handleConfirmRecording,
-  } = useAudioModalController()
-
-  const isLoading = false
+  } = useAudioModalController({ onClose, onConfirm })
 
   return (
     <Modal

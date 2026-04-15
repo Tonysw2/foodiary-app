@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { AppText } from '../app-text'
 import { Button } from '../button'
 
-const MAX_DURATION = 3
+const MAX_DURATION = 30
 
 interface RecordingControlsProps {
   onStop: () => void
