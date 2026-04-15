@@ -9,9 +9,13 @@ import { styles } from './styles'
 
 interface CreateMealOptionsProps {
   disabled?: boolean
+  onCreate: () => void
 }
 
-export function CreateMealOptions({ disabled }: CreateMealOptionsProps) {
+export function CreateMealOptions({
+  disabled,
+  onCreate,
+}: CreateMealOptionsProps) {
   const [currentVisibleModal, setCurrentVisibleModal] = useState<
     null | 'audio' | 'picture'
   >(null)
@@ -33,6 +37,7 @@ export function CreateMealOptions({ disabled }: CreateMealOptionsProps) {
       <PictureModal
         visible={currentVisibleModal === 'picture'}
         onClose={handleCloseModal}
+        onConfirm={onCreate}
       />
 
       <MealOptionButton

@@ -1,11 +1,11 @@
-import type { Meal } from '@app/types/meal'
+import type { SimplifiedMeal } from '@app/types/meal'
 import { createContext, use } from 'react'
 
 interface HomeContextValue {
   date: Date
   nextDay: () => void
   previousDay: () => void
-  meals: Meal[]
+  meals: SimplifiedMeal[]
   isLoading: boolean
   refetchMeals: () => Promise<unknown>
 }

@@ -18,7 +18,7 @@ import { usePictureModalController } from './use-picture-modal-controller'
 interface PictureModalProps {
   visible: boolean
   onClose: () => void
-  onConfirm?: (uri: string) => void
+  onConfirm?: () => void
 }
 
 export function PictureModal({

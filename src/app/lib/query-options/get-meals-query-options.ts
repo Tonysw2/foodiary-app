@@ -4,6 +4,7 @@ import { queryOptions } from '@tanstack/react-query'
 export const mealsQueryKeys = {
   all: ['meals'] as const,
   byDay: (date: string) => [...mealsQueryKeys.all, { date }] as const,
+  byId: (mealId?: string) => [...mealsQueryKeys.all, { mealId }] as const,
 }
 
 export const getMealsQueryOptions = (date: Date) => {

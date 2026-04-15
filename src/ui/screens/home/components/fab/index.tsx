@@ -1,4 +1,8 @@
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet'
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet'
 import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
 import { CreateMealOptions } from '@ui/components/create-meal-options'
@@ -18,15 +22,23 @@ export function Fab() {
         </Button>
       </View>
 
-      <BottomSheetModal ref={bottomSheetRef} style={styles.bottomSheetModal}>
-        <BottomSheetView style={[styles.content, { paddingBottom: bottom }]}>
-          <AppText style={{ letterSpacing: -0.4 }} size="lg" weight="semiBold">
-            Cadastre sua refeição
-          </AppText>
+      <BottomSheetModalProvider>
+        <BottomSheetModal ref={bottomSheetRef} style={styles.bottomSheetModal}>
+          <BottomSheetView style={[styles.content, { paddingBottom: bottom }]}>
+            <AppText
+              style={{ letterSpacing: -0.4 }}
+              size="lg"
+              weight="semiBold"
+            >
+              Cadastre sua refeição
+            </AppText>
 
-          <CreateMealOptions />
-        </BottomSheetView>
-      </BottomSheetModal>
+            <CreateMealOptions
+              onCreate={() => bottomSheetRef.current?.dismiss()}
+            />
+          </BottomSheetView>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
     </>
   )
 }

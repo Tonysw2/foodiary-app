@@ -25,13 +25,11 @@ export function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <BottomSheetModalProvider>
-          <TanstackQueryProvider>
-            <AuthProvider>
-              <RootNavigator />
-            </AuthProvider>
-          </TanstackQueryProvider>
-        </BottomSheetModalProvider>
+        <TanstackQueryProvider>
+          <AuthProvider>
+            <RootNavigator />
+          </AuthProvider>
+        </TanstackQueryProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   )

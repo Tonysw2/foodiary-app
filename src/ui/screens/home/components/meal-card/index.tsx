@@ -1,4 +1,10 @@
-import type { Meal } from '@app/types/meal'
+import type {
+  AppStackNavigationProps,
+  AppStackParamList,
+} from '@app/navigation/app-stack/types'
+import type { SimplifiedMeal } from '@app/types/meal'
+import { useNavigation } from '@react-navigation/native'
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AppText } from '@ui/components/app-text'
 import { theme } from '@ui/styles/theme'
 import { useMemo } from 'react'
@@ -17,11 +23,12 @@ function formatDate(date: string) {
 }
 
 interface MealCardProps {
-  meal: Meal
+  meal: SimplifiedMeal
 }
 
 export function MealCard({ meal }: MealCardProps) {
   const { isLoading } = useHomeContext()
+  const navigation = useNavigation<AppStackNavigationProps>()
 
   const foodsLabel = useMemo(
     () => meal.foods.map((f) => f.name).join(', '),
@@ -56,6 +63,9 @@ export function MealCard({ meal }: MealCardProps) {
       <View style={styles.wrapper}>
         <Pressable
           disabled={isLoading}
+          onPress={() =>
+            navigation.navigate('MealDetails', { mealId: meal.id })
+          }
           android_ripple={{ color: 'rgba(0, 0, 0, 0.1)', foreground: true }}
           style={({ pressed }) => [
             styles.card,

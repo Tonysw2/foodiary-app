@@ -1,4 +1,4 @@
-import type { Meal } from '@app/types/meal'
+import type { Meal, SimplifiedMeal } from '@app/types/meal'
 import { Service } from './service'
 
 export class MealsService extends Service {
@@ -15,6 +15,19 @@ export class MealsService extends Service {
           },
           signal,
         },
+      )
+
+    return data
+  }
+
+  static async getMealById({
+    mealId,
+    signal,
+  }: MealsService.GetMealByIdPayload): Promise<MealsService.GetMealByIdResponse> {
+    const { data } =
+      await MealsService.client.get<MealsService.GetMealByIdResponse>(
+        `/meals/${mealId}`,
+        { signal },
       )
 
     return data
@@ -52,7 +65,16 @@ export namespace MealsService {
   }
 
   export type ListMealsByDayResponse = {
-    meals: Meal[]
+    meals: SimplifiedMeal[]
+  }
+
+  export type GetMealByIdPayload = {
+    mealId: string
+    signal: AbortSignal
+  }
+
+  export type GetMealByIdResponse = {
+    meal: Meal
   }
 
   export type CreateMealPayload = {
