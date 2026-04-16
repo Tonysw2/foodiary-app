@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 16,
     backgroundColor: theme.colors.lime[400],
+    paddingTop: 12,
     paddingBottom: 30,
   },
   userInfo: {

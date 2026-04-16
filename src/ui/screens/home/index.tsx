@@ -1,6 +1,6 @@
 import { WelcomeModal } from '@ui/components/welcome-modal'
 import { theme } from '@ui/styles/theme'
-import { FlatList, RefreshControl, View } from 'react-native'
+import { FlatList, RefreshControl, StatusBar, View } from 'react-native'
 import { EmptyState } from './components/empty-state'
 import { Fab } from './components/fab'
 import { FullScreenLoader } from './components/full-screen-loader'
@@ -33,6 +33,8 @@ export function Home() {
   return (
     <View style={[styles.container, { paddingTop: top }]}>
       <WelcomeModal />
+
+      <StatusBar animated translucent barStyle="dark-content" />
 
       <HomeProvider
         date={date}
