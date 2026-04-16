@@ -4,26 +4,23 @@ import type { RouteProp } from '@react-navigation/native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useQuery } from '@tanstack/react-query'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export function useMealDetailsController() {
-  const { top } = useSafeAreaInsets()
   const navigation =
     useNavigation<NativeStackNavigationProp<AppStackParamList>>()
-  const route = useRoute<RouteProp<AppStackParamList, 'MealDetails'>>()
 
+  const route = useRoute<RouteProp<AppStackParamList, 'MealDetails'>>()
   const { mealId } = route.params
 
-  const { data, isLoading } = useQuery(getMealByIdQueryOptions(mealId))
+  const { data, isFetching } = useQuery(getMealByIdQueryOptions(mealId))
 
   function goBack() {
     navigation.goBack()
   }
 
   return {
-    top,
     meal: data?.meal,
-    isLoading,
+    isFetching,
     goBack,
   }
 }

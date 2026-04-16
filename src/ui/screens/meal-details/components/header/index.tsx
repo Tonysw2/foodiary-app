@@ -5,16 +5,18 @@ import { theme } from '@ui/styles/theme'
 import { BlurView } from 'expo-blur'
 import { LinearGradient } from 'expo-linear-gradient'
 import { ChevronLeft } from 'lucide-react-native'
+import { Skeleton } from 'moti/skeleton'
 import { ImageBackground, View } from 'react-native'
 import { styles } from './styles'
 import { useHeaderController } from './use-header-controller'
 
 interface HeaderProps {
   meal: Meal | null
+  isFetching: boolean
   onBack: () => void
 }
 
-export function Header({ meal, onBack }: HeaderProps) {
+export function Header({ meal, isFetching, onBack }: HeaderProps) {
   const { top, isPicture, summary, percentages } = useHeaderController({ meal })
 
   return (
@@ -77,9 +79,13 @@ export function Header({ meal, onBack }: HeaderProps) {
           </View>
           <View style={styles.macrosBarRight}>
             <AppText color={theme.colors.gray[300]}>Calorias</AppText>
-            <AppText color={theme.colors.white} weight="medium">
-              {summary.calories}kcal
-            </AppText>
+            {isFetching ? (
+              <Skeleton colorMode="dark" width={72} height={24} />
+            ) : (
+              <AppText color={theme.colors.white} weight="medium">
+                {summary.calories}kcal
+              </AppText>
+            )}
           </View>
         </View>
       </View>
@@ -88,51 +94,71 @@ export function Header({ meal, onBack }: HeaderProps) {
         <View style={styles.breakdownRow}>
           <View style={styles.breakdownItem}>
             <AppText color={theme.colors.gray[700]}>Carboidratos</AppText>
-            <AppText weight="medium" color={theme.colors.support.yellow}>
-              {summary.carbohydrates}g ({percentages.carbPercentage}%)
-            </AppText>
+            {isFetching ? (
+              <Skeleton colorMode="light" width={96} height={24} />
+            ) : (
+              <AppText weight="medium" color={theme.colors.support.yellow}>
+                {summary.carbohydrates}g ({percentages.carbPercentage}%)
+              </AppText>
+            )}
           </View>
           <View style={styles.breakdownItem}>
             <AppText color={theme.colors.gray[700]}>Proteínas</AppText>
-            <AppText weight="medium" color={theme.colors.support.green}>
-              {summary.proteins}g ({percentages.protPercentage}%)
-            </AppText>
+            {isFetching ? (
+              <Skeleton colorMode="light" width={96} height={24} />
+            ) : (
+              <AppText weight="medium" color={theme.colors.support.green}>
+                {summary.proteins}g ({percentages.protPercentage}%)
+              </AppText>
+            )}
           </View>
           <View style={styles.breakdownItem}>
             <AppText color={theme.colors.gray[700]}>Gorduras</AppText>
-            <AppText weight="medium" color={theme.colors.support.orange}>
-              {summary.fats}g ({percentages.fatPercentage}%)
-            </AppText>
+            {isFetching ? (
+              <Skeleton colorMode="light" width={96} height={24} />
+            ) : (
+              <AppText weight="medium" color={theme.colors.support.orange}>
+                {summary.fats}g ({percentages.fatPercentage}%)
+              </AppText>
+            )}
           </View>
         </View>
-        <View style={styles.progressBar}>
-          <View
-            style={{
-              width: `${percentages.carbPercentage}%`,
-              backgroundColor: theme.colors.support.yellow,
-            }}
-          />
-          <View
-            style={{
-              width: `${percentages.protPercentage}%`,
-              backgroundColor: theme.colors.support.green,
-            }}
-          />
-          <View
-            style={{
-              width: `${percentages.fatPercentage}%`,
-              backgroundColor: theme.colors.support.orange,
-            }}
-          />
-        </View>
+        {isFetching ? (
+          <Skeleton show colorMode="light" width="100%" height={4} />
+        ) : (
+          <View style={styles.progressBar}>
+            <View
+              style={{
+                width: `${percentages.carbPercentage}%`,
+                backgroundColor: theme.colors.support.yellow,
+              }}
+            />
+            <View
+              style={{
+                width: `${percentages.protPercentage}%`,
+                backgroundColor: theme.colors.support.green,
+              }}
+            />
+            <View
+              style={{
+                width: `${percentages.fatPercentage}%`,
+                backgroundColor: theme.colors.support.orange,
+              }}
+            />
+          </View>
+        )}
       </View>
 
       <View style={styles.divider} />
 
       <View style={styles.mealInfo}>
-        <AppText weight="semiBold" size="2xl">
-          {meal?.name ?? ''}
-        </AppText>
+        {isFetching ? (
+          <Skeleton colorMode="light" width={180} height={36} />
+        ) : (
+          <AppText weight="semiBold" size="2xl">
+            {meal?.name ?? ''}
+          </AppText>
+        )}
         <AppText weight="medium" color={theme.colors.gray[700]}>
           Itens
         </AppText>
