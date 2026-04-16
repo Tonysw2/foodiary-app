@@ -6,100 +6,83 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-    gap: 12,
-  },
   backButton: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    backgroundColor: theme.colors.gray[200],
+    position: 'absolute',
+    left: 16,
+    zIndex: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 32,
-    gap: 20,
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  mealHeader: {
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  heroContainer: {
+    width: '100%',
+    height: 250,
+  },
+  heroImage: {
+    width: '100%',
+    height: '100%',
+  },
+  heroFallback: {
+    backgroundColor: theme.colors.black[700],
+  },
+  heroOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  macrosCard: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: theme.colors.white,
     gap: 12,
   },
-  icon: {
-    height: 56,
-    width: 56,
-    borderRadius: 28,
-    backgroundColor: theme.colors.gray[200],
-    alignItems: 'center',
-    justifyContent: 'center',
+  macroColumn: {
+    flex: 1,
+    gap: 6,
   },
-  mealHeaderInfo: {
+  progressBarTrack: {
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: theme.colors.gray[400],
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: 4,
+    borderRadius: 2,
+  },
+  mealNameContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  itemsSection: {
+    paddingHorizontal: 20,
     gap: 4,
-    flexShrink: 1,
-  },
-  badge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 99,
-  },
-  badgePending: {
-    backgroundColor: theme.colors.gray[300],
-  },
-  badgeProcessing: {
-    backgroundColor: theme.colors.gray[300],
-  },
-  badgeSuccess: {
-    backgroundColor: theme.colors['lime']['600/10'],
-  },
-  badgeFailed: {
-    backgroundColor: theme.colors.support['red/10'],
-  },
-  section: {
-    gap: 12,
   },
   divider: {
     height: 1,
     backgroundColor: theme.colors.gray[400],
+    marginVertical: 8,
   },
   foodItem: {
-    borderWidth: 1,
-    borderColor: theme.colors.gray[400],
-    borderRadius: 12,
-    padding: 12,
-    gap: 10,
-  },
-  foodItemHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  foodMacrosRow: {
-    flexDirection: 'row',
-  },
-  foodMacroItem: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 2,
-  },
-  summary: {
-    backgroundColor: theme.colors.gray[100],
-    borderRadius: 12,
-    padding: 16,
-    gap: 16,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-  },
-  summaryItem: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 2,
+    paddingVertical: 4,
   },
 })

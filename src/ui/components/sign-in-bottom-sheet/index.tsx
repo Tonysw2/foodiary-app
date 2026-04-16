@@ -1,5 +1,6 @@
 import {
   BottomSheetModal,
+  BottomSheetModalProvider,
   BottomSheetTextInput,
   BottomSheetView,
 } from '@gorhom/bottom-sheet'
@@ -25,6 +26,7 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
     useSignInBottomSheetController(ref)
 
   return (
+    <BottomSheetModalProvider>
     <BottomSheetModal ref={bottomSheetRef}>
       <BottomSheetView style={[styles.container, { paddingBottom: bottom }]}>
         <AppText size="xl" weight="semiBold" style={styles.heading}>
@@ -82,5 +84,6 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
         </View>
       </BottomSheetView>
     </BottomSheetModal>
+    </BottomSheetModalProvider>
   )
 }
