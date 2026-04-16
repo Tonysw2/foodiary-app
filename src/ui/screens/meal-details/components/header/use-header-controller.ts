@@ -39,6 +39,10 @@ export function useHeaderController({ meal }: UseHeaderControllerParams) {
     const carbCalories = summary.carbohydrates * 4
     const fatsCalories = summary.fats * 9
 
+    if (summary.calories === 0) {
+      return { carbPercentage: 0, fatPercentage: 0, protPercentage: 0 }
+    }
+
     return {
       carbPercentage: Math.round((carbCalories * 100) / summary.calories),
       protPercentage: Math.round((protCalories * 100) / summary.calories),
