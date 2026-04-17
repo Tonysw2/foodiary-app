@@ -5,16 +5,23 @@ import { ScreenHeader } from '@ui/components/screen-header'
 import { theme } from '@ui/styles/theme'
 import { ChevronLeft } from 'lucide-react-native'
 import { Controller, FormProvider } from 'react-hook-form'
-import { StatusBar, View } from 'react-native'
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
+  View,
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { styles } from './styles'
 import { useEditGoalsController } from './use-edit-goals-controller'
 
 export function EditGoals() {
-  const { top, bottom, form, isPending, handleCancel, handleSubmit } =
+  const { form, isPending, handleCancel, handleSubmit } =
     useEditGoalsController()
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <SafeAreaView style={styles.container}>
       <StatusBar animated translucent barStyle="dark-content" />
 
       <ScreenHeader
@@ -26,95 +33,107 @@ export function EditGoals() {
         }
       />
 
-      <FormProvider {...form}>
-        <View style={styles.form}>
-          <Controller
-            control={form.control}
-            name="calories"
-            render={({ field, fieldState }) => (
-              <FormGroup label="Calorias" error={fieldState.error?.message}>
-                <Input
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  keyboardType="numeric"
-                  placeholder="0"
-                  suffix="kcal"
-                  editable={!isPending}
-                />
-              </FormGroup>
-            )}
-          />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView style={{ flex: 1 }}>
+          <FormProvider {...form}>
+            <View style={styles.form}>
+              <Controller
+                control={form.control}
+                name="calories"
+                render={({ field, fieldState }) => (
+                  <FormGroup label="Calorias" error={fieldState.error?.message}>
+                    <Input
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      keyboardType="numeric"
+                      placeholder="0"
+                      suffix="kcal"
+                      editable={!isPending}
+                    />
+                  </FormGroup>
+                )}
+              />
 
-          <Controller
-            control={form.control}
-            name="carbohydrates"
-            render={({ field, fieldState }) => (
-              <FormGroup label="Carboidratos" error={fieldState.error?.message}>
-                <Input
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  keyboardType="numeric"
-                  placeholder="0"
-                  suffix="g"
-                  editable={!isPending}
-                />
-              </FormGroup>
-            )}
-          />
+              <Controller
+                control={form.control}
+                name="carbohydrates"
+                render={({ field, fieldState }) => (
+                  <FormGroup
+                    label="Carboidratos"
+                    error={fieldState.error?.message}
+                  >
+                    <Input
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      keyboardType="numeric"
+                      placeholder="0"
+                      suffix="g"
+                      editable={!isPending}
+                    />
+                  </FormGroup>
+                )}
+              />
 
-          <Controller
-            control={form.control}
-            name="proteins"
-            render={({ field, fieldState }) => (
-              <FormGroup label="Proteínas" error={fieldState.error?.message}>
-                <Input
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  keyboardType="numeric"
-                  placeholder="0"
-                  suffix="g"
-                  editable={!isPending}
-                />
-              </FormGroup>
-            )}
-          />
+              <Controller
+                control={form.control}
+                name="proteins"
+                render={({ field, fieldState }) => (
+                  <FormGroup
+                    label="Proteínas"
+                    error={fieldState.error?.message}
+                  >
+                    <Input
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      keyboardType="numeric"
+                      placeholder="0"
+                      suffix="g"
+                      editable={!isPending}
+                    />
+                  </FormGroup>
+                )}
+              />
 
-          <Controller
-            control={form.control}
-            name="fats"
-            render={({ field, fieldState }) => (
-              <FormGroup label="Gorduras" error={fieldState.error?.message}>
-                <Input
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  keyboardType="numeric"
-                  placeholder="0"
-                  suffix="g"
-                  editable={!isPending}
-                />
-              </FormGroup>
-            )}
-          />
+              <Controller
+                control={form.control}
+                name="fats"
+                render={({ field, fieldState }) => (
+                  <FormGroup label="Gorduras" error={fieldState.error?.message}>
+                    <Input
+                      value={field.value}
+                      onChangeText={field.onChange}
+                      keyboardType="numeric"
+                      placeholder="0"
+                      suffix="g"
+                      editable={!isPending}
+                    />
+                  </FormGroup>
+                )}
+              />
+            </View>
+          </FormProvider>
+        </ScrollView>
+        <View style={styles.footer}>
+          <View style={styles.footerButton}>
+            <Button
+              variant="secondary"
+              onPress={handleCancel}
+              disabled={isPending}
+            >
+              Cancelar
+            </Button>
+          </View>
+
+          <View style={styles.footerButton}>
+            <Button onPress={handleSubmit} isLoading={isPending}>
+              Salvar
+            </Button>
+          </View>
         </View>
-      </FormProvider>
-
-      <View style={[styles.footer, { paddingBottom: 16 + bottom }]}>
-        <View style={styles.footerButton}>
-          <Button
-            variant="secondary"
-            onPress={handleCancel}
-            disabled={isPending}
-          >
-            Cancelar
-          </Button>
-        </View>
-
-        <View style={styles.footerButton}>
-          <Button onPress={handleSubmit} isLoading={isPending}>
-            Salvar
-          </Button>
-        </View>
-      </View>
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }

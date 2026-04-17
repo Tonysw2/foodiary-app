@@ -7,11 +7,9 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { type EditGoalsSchema, editGoalsSchema } from './schema'
 
 export function useEditGoalsController() {
-  const { top, bottom } = useSafeAreaInsets()
   const navigation =
     useNavigation<NativeStackNavigationProp<AppStackParamList>>()
   const queryClient = useQueryClient()
@@ -55,13 +53,14 @@ export function useEditGoalsController() {
       },
       {
         onSuccess: () => navigation.goBack(),
+        onError: (error) => {
+          console.log(error)
+        },
       },
     )
   })
 
   return {
-    top,
-    bottom,
     form,
     isPending: mutation.isPending,
     handleCancel,

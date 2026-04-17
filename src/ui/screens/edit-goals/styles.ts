@@ -14,10 +14,10 @@ export const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     gap: 12,
-    paddingTop: 16,
+    paddingVertical: 16,
     paddingHorizontal: 20,
-    borderWidth: 1,
-    borderColor: theme.colors.gray[400],
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.gray[400],
   },
   footerButton: {
     flex: 1,

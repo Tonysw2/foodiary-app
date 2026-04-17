@@ -15,15 +15,6 @@ export class AccountService extends Service {
     return data
   }
 
-  static async updateGoals(payload: AccountService.UpdateGoalsPayload) {
-    const { data } =
-      await AccountService.client.patch<AccountService.UpdateGoalsResponse>(
-        '/users/me/goals',
-        payload,
-      )
-
-    return data
-  }
 }
 
 export namespace AccountService {
@@ -48,12 +39,5 @@ export namespace AccountService {
     }
   }
 
-  export type UpdateGoalsPayload = {
-    calories: number
-    proteins: number
-    carbohydrates: number
-    fats: number
-  }
 
-  export type UpdateGoalsResponse = undefined
 }
