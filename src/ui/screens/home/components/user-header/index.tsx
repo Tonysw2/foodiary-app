@@ -7,7 +7,7 @@ import { AppText } from '@ui/components/app-text'
 import { Button } from '@ui/components/button'
 import { theme } from '@ui/styles/theme'
 import { TargetIcon } from 'lucide-react-native'
-import { Image, View } from 'react-native'
+import { Image, TouchableOpacity, View } from 'react-native'
 import { styles } from './styles'
 
 export function UserHeader() {
@@ -17,7 +17,11 @@ export function UserHeader() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.userInfo}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.userInfo}
+        onPress={() => navigation.navigate('EditProfile')}
+      >
         <Image
           source={{ uri: 'https://github.com/tonysw2.png' }}
           style={styles.avatar}
@@ -29,7 +33,7 @@ export function UserHeader() {
           </AppText>
           <AppText weight="semiBold">{account?.profile.name}</AppText>
         </View>
-      </View>
+      </TouchableOpacity>
 
       <Button
         variant="ghost"

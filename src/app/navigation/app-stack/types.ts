@@ -4,6 +4,7 @@ export type AppStackParamList = {
   Home: undefined
   MealDetails: { mealId: string }
   EditGoals: undefined
+  EditProfile: undefined
 }
 
 export type AppStackNavigationProps =

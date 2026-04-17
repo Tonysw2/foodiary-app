@@ -16,6 +16,7 @@ interface RadioGroupContextValue {
   orientation: 'vertical' | 'horizontal'
   isHorizontal: boolean
   error: boolean
+  disabled: boolean
 }
 
 const RadioGroupContext = createContext({} as RadioGroupContextValue)
@@ -25,6 +26,7 @@ interface IRadioGroupProps {
   onValueChange: (value: string) => void
   orientation?: 'vertical' | 'horizontal'
   error?: boolean
+  disabled?: boolean
   children: React.ReactNode
 }
 
@@ -33,13 +35,14 @@ export function RadioGroup({
   onValueChange,
   orientation = 'vertical',
   error = false,
+  disabled = false,
   children,
 }: IRadioGroupProps) {
   const isHorizontal = orientation === 'horizontal'
 
   return (
     <RadioGroupContext.Provider
-      value={{ value, onValueChange, orientation, isHorizontal, error }}
+      value={{ value, onValueChange, orientation, isHorizontal, error, disabled }}
     >
       <View
         style={[styles.container, isHorizontal && styles.containerHorizontal]}
@@ -76,8 +79,10 @@ export function RadioGroupItem({
     onValueChange,
     orientation,
     error,
+    disabled: groupDisabled,
   } = use(RadioGroupContext)
   const isSelected = selectedValue === value
+  const isDisabled = disabled || groupDisabled
 
   return (
     <RadioGroupItemContext.Provider value={{ isSelected }}>
@@ -88,10 +93,10 @@ export function RadioGroupItem({
           orientation === 'horizontal' && styles.itemHorizontal,
           isSelected && styles.itemSelected,
           error && styles.itemError,
-          disabled && styles.itemDisabled,
+          isDisabled && styles.itemDisabled,
           style,
         ]}
-        disabled={disabled}
+        disabled={isDisabled}
         onPress={() => onValueChange(value)}
       >
         {children}

@@ -15,6 +15,15 @@ export class AccountService extends Service {
     return data
   }
 
+  static async updateProfile(payload: AccountService.UpdateProfilePayload) {
+    const { data } =
+      await AccountService.client.put<AccountService.UpdateProfileResponse>(
+        '/users/profile',
+        payload,
+      )
+
+    return data
+  }
 }
 
 export namespace AccountService {
@@ -39,5 +48,13 @@ export namespace AccountService {
     }
   }
 
+  export type UpdateProfilePayload = {
+    name: string
+    birthDate: string
+    gender: Gender
+    height: number
+    weight: number
+  }
 
+  export type UpdateProfileResponse = undefined
 }
