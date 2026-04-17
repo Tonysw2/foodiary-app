@@ -87,6 +87,7 @@ export function EditProfile() {
                         value={field.value}
                         onChangeText={field.onChange}
                         placeholder="Seu nome"
+                        autoCapitalize="words"
                         editable={!isPending}
                       />
                     </FormGroup>

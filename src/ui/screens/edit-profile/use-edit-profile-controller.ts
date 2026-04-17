@@ -50,10 +50,7 @@ export function useEditProfileController() {
         weight: data.weight,
       })
       navigation.goBack()
-    } catch (error) {
-      if (isAxiosError(error)) {
-        console.log(error.response?.data)
-      }
+    } catch {
       Alert.alert('Erro ao atualizar perfil.')
     }
   })

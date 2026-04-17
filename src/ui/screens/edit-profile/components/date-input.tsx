@@ -44,7 +44,8 @@ export function DateInput({
   return (
     <View>
       <Pressable
-        onPress={() => !disabled && setIsPickerOpen(true)}
+        disabled={disabled}
+        onPress={() => setIsPickerOpen((prev) => !prev)}
         style={[
           inputStyles({
             disabled: disabled ? 'true' : 'false',
@@ -59,14 +60,15 @@ export function DateInput({
       </Pressable>
 
       {isPickerOpen && (
-        <DateTimePicker
-          mode="date"
-          value={date}
-          onChange={handleChange}
-          display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
-          maximumDate={new Date()}
-          // style={{ flex: 1, width: '100%', backgroundColor: 'red' }}
-        />
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <DateTimePicker
+            mode="date"
+            value={date}
+            onChange={handleChange}
+            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+            maximumDate={new Date()}
+          />
+        </View>
       )}
     </View>
   )
