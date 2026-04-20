@@ -42,7 +42,14 @@ export function RadioGroup({
 
   return (
     <RadioGroupContext.Provider
-      value={{ value, onValueChange, orientation, isHorizontal, error, disabled }}
+      value={{
+        value,
+        onValueChange,
+        orientation,
+        isHorizontal,
+        error,
+        disabled,
+      }}
     >
       <View
         style={[styles.container, isHorizontal && styles.containerHorizontal]}

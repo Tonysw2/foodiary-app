@@ -6,7 +6,6 @@ import {
   HostGrotesk_600SemiBold,
   useFonts,
 } from '@expo-google-fonts/host-grotesk'
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { RootNavigator } from './app/navigation'

@@ -1,4 +1,9 @@
-export type MealStatus = 'PENDING' | 'QUEUED' | 'PROCESSING' | 'SUCCESS' | 'FAILED'
+export type MealStatus =
+  | 'PENDING'
+  | 'QUEUED'
+  | 'PROCESSING'
+  | 'SUCCESS'
+  | 'FAILED'
 
 export type MealInputType = 'PICTURE' | 'AUDIO'
 

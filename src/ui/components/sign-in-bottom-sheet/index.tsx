@@ -27,63 +27,63 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
 
   return (
     <BottomSheetModalProvider>
-    <BottomSheetModal ref={bottomSheetRef}>
-      <BottomSheetView style={[styles.container, { paddingBottom: bottom }]}>
-        <AppText size="xl" weight="semiBold" style={styles.heading}>
-          Acesse a sua conta
-        </AppText>
+      <BottomSheetModal ref={bottomSheetRef}>
+        <BottomSheetView style={[styles.container, { paddingBottom: bottom }]}>
+          <AppText size="xl" weight="semiBold" style={styles.heading}>
+            Acesse a sua conta
+          </AppText>
 
-        <View style={styles.form}>
-          <Controller
-            control={form.control}
-            name="email"
-            render={({ field, fieldState }) => (
-              <FormGroup label="E-mail" error={fieldState.error?.message}>
-                <Input
-                  InputComponent={BottomSheetTextInput}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  autoComplete="email"
-                  returnKeyType="next"
-                  onSubmitEditing={() => passwordInputRef.current?.focus()}
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  disabled={form.formState.isSubmitting}
-                />
-              </FormGroup>
-            )}
-          />
+          <View style={styles.form}>
+            <Controller
+              control={form.control}
+              name="email"
+              render={({ field, fieldState }) => (
+                <FormGroup label="E-mail" error={fieldState.error?.message}>
+                  <Input
+                    InputComponent={BottomSheetTextInput}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoComplete="email"
+                    returnKeyType="next"
+                    onSubmitEditing={() => passwordInputRef.current?.focus()}
+                    value={field.value}
+                    onChangeText={field.onChange}
+                    disabled={form.formState.isSubmitting}
+                  />
+                </FormGroup>
+              )}
+            />
 
-          <Controller
-            control={form.control}
-            name="password"
-            render={({ field, fieldState }) => (
-              <FormGroup label="Senha" error={fieldState.error?.message}>
-                <Input
-                  ref={passwordInputRef}
-                  InputComponent={BottomSheetTextInput}
-                  secureTextEntry
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  autoComplete="current-password"
-                  returnKeyType="done"
-                  onEndEditing={onSubmit}
-                  value={field.value}
-                  onChangeText={field.onChange}
-                  onBlur={field.onBlur}
-                  disabled={form.formState.isSubmitting}
-                />
-              </FormGroup>
-            )}
-          />
+            <Controller
+              control={form.control}
+              name="password"
+              render={({ field, fieldState }) => (
+                <FormGroup label="Senha" error={fieldState.error?.message}>
+                  <Input
+                    ref={passwordInputRef}
+                    InputComponent={BottomSheetTextInput}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoComplete="current-password"
+                    returnKeyType="done"
+                    onEndEditing={onSubmit}
+                    value={field.value}
+                    onChangeText={field.onChange}
+                    onBlur={field.onBlur}
+                    disabled={form.formState.isSubmitting}
+                  />
+                </FormGroup>
+              )}
+            />
 
-          <Button onPress={onSubmit} isLoading={form.formState.isSubmitting}>
-            Entrar
-          </Button>
-        </View>
-      </BottomSheetView>
-    </BottomSheetModal>
+            <Button onPress={onSubmit} isLoading={form.formState.isSubmitting}>
+              Entrar
+            </Button>
+          </View>
+        </BottomSheetView>
+      </BottomSheetModal>
     </BottomSheetModalProvider>
   )
 }

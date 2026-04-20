@@ -1,10 +1,6 @@
-import type {
-  AppStackNavigationProps,
-  AppStackParamList,
-} from '@app/navigation/app-stack/types'
+import type { AppStackNavigationProps } from '@app/navigation/app-stack/types'
 import type { SimplifiedMeal } from '@app/types/meal'
 import { useNavigation } from '@react-navigation/native'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AppText } from '@ui/components/app-text'
 import { theme } from '@ui/styles/theme'
 import { useMemo } from 'react'
